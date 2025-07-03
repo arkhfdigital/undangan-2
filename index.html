@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Undangan Ulang Tahun</title>
+    <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js"></script>
+
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
 
@@ -834,6 +837,18 @@
           .querySelector(`[data-status="${status}"]`)
           .classList.add("selected");
       }
+      // Inisialisasi Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyCWkUx6luKKDMpdIk45s4PsMhMB5FSBXiw",
+        authDomain: "undanganulangtahun.firebaseapp.com",
+        projectId: "undanganulangtahun",
+        storageBucket: "undanganulangtahun.firebasestorage.app",
+        messagingSenderId: "497843490081",
+        appId: "1:497843490081:web:a5ca6f84661ae2f1fd8260",
+        measurementId: "G-T5DQJL7F2N",
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
 
       function resetForm() {
         document.getElementById("rsvpForm").reset();
@@ -845,7 +860,7 @@
 
       document
         .getElementById("rsvpForm")
-        .addEventListener("submit", function (e) {
+        .addEventListener("submit", async function (e) {
           e.preventDefault();
 
           const userName = document.getElementById("userName").value.trim();
@@ -864,7 +879,6 @@
           }
 
           const message = {
-            id: Date.now(),
             name: userName,
             status: selectedStatus,
             message:
@@ -875,12 +889,16 @@
             timestamp: new Date(),
           };
 
-          messages.push(message);
-          updateURLWithMessages();
-          showConfetti();
-          closeRSVP();
-          updateMessageDisplay();
-          alert("Terima kasih! ucapan Anda telah dikirim 🎉");
+          try {
+            await db.collection("messages").add(message);
+            showConfetti();
+            closeRSVP();
+            alert("Pesan Anda berhasil dikirim! 🎉");
+            loadMessages(); // untuk refresh daftar pesan
+          } catch (error) {
+            console.error("Gagal menyimpan pesan:", error);
+            alert("Terjadi kesalahan saat mengirim pesan.");
+          }
         });
 
       function updateURLWithMessages() {
@@ -890,17 +908,55 @@
         window.history.pushState({}, "", url);
       }
 
-      function loadMessagesFromURL() {
-        const params = new URLSearchParams(window.location.search);
-        const messagesParam = params.get("messages");
+      async function loadMessages() {
+        const container = document.getElementById("messagesContainer");
+        const messageCount = document.getElementById("messageCount");
+        const messageCountBadge = document.getElementById("messageCountBadge");
 
-        if (messagesParam) {
-          try {
-            messages = JSON.parse(atob(messagesParam));
-            updateMessageDisplay();
-          } catch (e) {
-            console.log("Error loading messages:", e);
+        container.innerHTML = "⏳ Memuat pesan...";
+        try {
+          const snapshot = await db
+            .collection("messages")
+            .orderBy("timestamp", "desc")
+            .get();
+          const allMessages = snapshot.docs.map((doc) => doc.data());
+
+          messageCount.textContent = allMessages.length;
+          messageCountBadge.textContent = allMessages.length;
+
+          if (allMessages.length === 0) {
+            container.innerHTML =
+              '<div class="no-messages">Belum ada pesan. Jadilah yang pertama mengirim ucapan! 🎉</div>';
+            return;
           }
+
+          container.innerHTML = "";
+          allMessages.forEach((msg) => {
+            const item = document.createElement("div");
+            item.className = "message-item";
+            const statusClass =
+              msg.status === "attending"
+                ? "status-attending"
+                : "status-not-attending";
+
+            item.innerHTML = `
+        <div class="message-header">
+          <div class="message-name">${msg.name}</div>
+          <div class="message-status ${statusClass}">
+            ${msg.status === "attending" ? "✅ Hadir" : "❌ Tidak Hadir"}
+          </div>
+        </div>
+        <div class="message-text">${msg.message}</div>
+        <div class="message-time">${new Date(
+          msg.timestamp.seconds * 1000
+        ).toLocaleString("id-ID")}</div>
+      `;
+            container.appendChild(item);
+          });
+        } catch (error) {
+          console.error("Gagal memuat pesan:", error);
+          container.innerHTML =
+            "<p style='color: white;'>Gagal memuat pesan 😢</p>";
         }
       }
 
@@ -958,7 +1014,7 @@
 
       window.onload = function () {
         createParticles();
-        loadMessagesFromURL();
+        loadMessages();
       };
     </script>
   </body>
