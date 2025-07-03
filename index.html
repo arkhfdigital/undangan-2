@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Undangan Ulang Tahun</title>
-    <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
@@ -847,6 +847,7 @@
         appId: "1:497843490081:web:a5ca6f84661ae2f1fd8260",
         measurementId: "G-T5DQJL7F2N",
       };
+      const Timestamp = firebase.firestore.Timestamp;
       firebase.initializeApp(firebaseConfig);
       const db = firebase.firestore();
 
@@ -886,7 +887,7 @@
               (selectedStatus === "attending"
                 ? "Terima kasih atas undangannya! 🎉"
                 : "Maaf tidak bisa hadir, tapi selamat ya! 🎂"),
-            timestamp: new Date(),
+            timestamp: Timestamp.fromDate(new Date())
           };
 
           try {
