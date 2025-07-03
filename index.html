@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Undangan Ulang Tahun</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      /* Animated background particles */
+      .particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 50%;
+        animation: float 6s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-20px) rotate(180deg);
+        }
+      }
+
+      /* Main container */
+      .container {
+        position: relative;
+        z-index: 10;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .invitation-card {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(25px);
+        border-radius: 30px;
+        padding: 40px;
+        text-align: center;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+        max-width: 500px;
+        width: 100%;
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        position: relative;
+        overflow: hidden;
+        animation: slideIn 1s ease-out;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(50px) scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      /* Decorative elements */
+      .card-decoration {
+        position: absolute;
+        top: -50px;
+        left: -50px;
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(45deg, #ff6b6b, #ffa726);
+        border-radius: 50%;
+        opacity: 0.1;
+        animation: rotate 10s linear infinite;
+      }
+
+      .card-decoration:nth-child(2) {
+        top: auto;
+        bottom: -50px;
+        right: -50px;
+        left: auto;
+        background: linear-gradient(45deg, #4ecdc4, #45b7d1);
+        animation-delay: -5s;
+      }
+
+      @keyframes rotate {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Typography */
+      .welcome-text {
+        font-size: 1.2rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 10px;
+        font-weight: 300;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+      }
+
+      .main-title {
+        font-size: 2.5rem;
+        color: #ffffff;
+        margin-bottom: 30px;
+        font-weight: 700;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+        position: relative;
+      }
+
+      .emoji-decoration {
+        font-size: 3rem;
+        margin: 20px 0;
+        animation: bounce 2s ease-in-out infinite;
+      }
+
+      @keyframes bounce {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-10px);
+        }
+        60% {
+          transform: translateY(-5px);
+        }
+      }
+
+      .guest-name {
+        font-size: 1.3rem;
+        color: #ffffff;
+        margin-bottom: 30px;
+        font-weight: 600;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        border-left: 4px solid rgba(255, 255, 255, 0.6);
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+      }
+
+      .event-details {
+        margin: 25px 0;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+      }
+
+      .detail-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 15px 0;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .detail-item:last-child {
+        border-bottom: none;
+      }
+
+      .detail-label {
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.95);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+      }
+
+      .detail-value {
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.9);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+      }
+
+      .icon {
+        font-size: 1.2rem;
+      }
+
+      /* Buttons */
+      .btn-container {
+        margin-top: 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .btn {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 25px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+      }
+
+      .btn-secondary {
+        background: linear-gradient(135deg, #ff6b6b, #ffa726);
+        box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+      }
+
+      .btn-secondary:hover {
+        box-shadow: 0 15px 30px rgba(255, 107, 107, 0.4);
+      }
+
+      .btn-success {
+        background: linear-gradient(135deg, #4ecdc4, #44a08d);
+        box-shadow: 0 10px 20px rgba(78, 205, 196, 0.3);
+      }
+
+      .btn-success:hover {
+        box-shadow: 0 15px 30px rgba(78, 205, 196, 0.4);
+      }
+
+      /* Modal Styles */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+      }
+
+      .modal-content {
+        background: rgba(255, 255, 255, 0.95);
+        margin: 5% auto;
+        padding: 30px;
+        border-radius: 20px;
+        width: 90%;
+        max-width: 500px;
+        position: relative;
+        animation: modalSlideIn 0.3s ease-out;
+        backdrop-filter: blur(20px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+      }
+
+      @keyframes modalSlideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .close {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        color: #666;
+        transition: color 0.3s;
+      }
+
+      .close:hover {
+        color: #000;
+      }
+
+      .modal h2 {
+        color: #2c3e50;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #2c3e50;
+      }
+
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+        font-family: "Poppins", sans-serif;
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus,
+      .form-group select:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      .form-group textarea {
+        resize: vertical;
+        min-height: 100px;
+      }
+
+      .rsvp-status {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+
+      .rsvp-option {
+        flex: 1;
+        padding: 15px;
+        border: 2px solid rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: 600;
+      }
+
+      .rsvp-option.selected {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border-color: #667eea;
+      }
+
+      .rsvp-option:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Messages Section */
+      .messages-section {
+        margin-top: 30px;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+      }
+
+      .messages-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .messages-title {
+        color: rgba(255, 255, 255, 0.95);
+        font-size: 1.2rem;
+        font-weight: 600;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+      }
+
+      .messages-count {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+
+      .messages-container {
+        max-height: 300px;
+        overflow-y: auto;
+        padding: 10px 0;
+      }
+
+      .message-item {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        border-left: 4px solid rgba(255, 255, 255, 0.4);
+        animation: messageSlideIn 0.3s ease-out;
+      }
+
+      @keyframes messageSlideIn {
+        from {
+          opacity: 0;
+          transform: translateX(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .message-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+
+      .message-name {
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.95);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+      }
+
+      .message-status {
+        font-size: 0.8rem;
+        padding: 3px 8px;
+        border-radius: 10px;
+        font-weight: 600;
+      }
+
+      .status-attending {
+        background: rgba(78, 205, 196, 0.3);
+        color: rgba(255, 255, 255, 0.95);
+      }
+
+      .status-not-attending {
+        background: rgba(255, 107, 107, 0.3);
+        color: rgba(255, 255, 255, 0.95);
+      }
+
+      .message-text {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.9rem;
+        line-height: 1.4;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+      }
+
+      .message-time {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.7);
+        text-align: right;
+        margin-top: 5px;
+      }
+
+      .no-messages {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.7);
+        font-style: italic;
+        padding: 20px;
+      }
+
+      /* Floating balloons */
+      .balloon {
+        position: absolute;
+        font-size: 2rem;
+        animation: floatUp 8s ease-in-out infinite;
+        opacity: 0.8;
+      }
+
+      @keyframes floatUp {
+        0% {
+          transform: translateY(100vh) rotate(0deg);
+          opacity: 0;
+        }
+        10% {
+          opacity: 0.8;
+        }
+        90% {
+          opacity: 0.8;
+        }
+        100% {
+          transform: translateY(-100px) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      /* Responsive design */
+      @media (max-width: 768px) {
+        .invitation-card {
+          padding: 30px 20px;
+          margin: 10px;
+          border-radius: 20px;
+        }
+
+        .main-title {
+          font-size: 2rem;
+        }
+
+        .welcome-text {
+          font-size: 1rem;
+        }
+
+        .guest-name {
+          font-size: 1.1rem;
+        }
+
+        .detail-item {
+          flex-direction: column;
+          text-align: center;
+          gap: 5px;
+        }
+
+        .btn {
+          padding: 12px 25px;
+          font-size: 1rem;
+        }
+
+        .modal-content {
+          width: 95%;
+          padding: 20px;
+          margin: 10% auto;
+        }
+
+        .rsvp-status {
+          flex-direction: column;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .invitation-card {
+          padding: 25px 15px;
+        }
+
+        .main-title {
+          font-size: 1.8rem;
+        }
+
+        .emoji-decoration {
+          font-size: 2.5rem;
+        }
+      }
+
+      /* Animation delays for staggered effect */
+      .detail-item:nth-child(1) {
+        animation-delay: 0.2s;
+      }
+      .detail-item:nth-child(2) {
+        animation-delay: 0.4s;
+      }
+      .detail-item:nth-child(3) {
+        animation-delay: 0.6s;
+      }
+
+      .fadeInUp {
+        animation: fadeInUp 0.8s ease-out forwards;
+        opacity: 0;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Confetti effect */
+      .confetti {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        background: #ff6b6b;
+        animation: confetti-fall 3s linear infinite;
+      }
+
+      @keyframes confetti-fall {
+        0% {
+          transform: translateY(-100vh) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(100vh) rotate(720deg);
+          opacity: 0;
+        }
+      }
+
+      /* Scrollbar styling */
+      .messages-container::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .messages-container::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+      }
+
+      .messages-container::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+      }
+
+      .messages-container::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Animated background particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Floating balloons -->
+    <div class="balloon" style="left: 10%; animation-delay: 0s">🎈</div>
+    <div class="balloon" style="left: 20%; animation-delay: 2s">🎀</div>
+    <div class="balloon" style="left: 70%; animation-delay: 4s">🎁</div>
+    <div class="balloon" style="left: 80%; animation-delay: 6s">🎂</div>
+
+    <div class="container">
+      <div class="invitation-card">
+        <div class="card-decoration"></div>
+        <div class="card-decoration"></div>
+
+        <div class="welcome-text fadeInUp">Selamat Datang!</div>
+        <h1 class="main-title fadeInUp">Undangan Ulang Tahun</h1>
+
+        <div class="emoji-decoration">🎉🎊🥳🎁🎂</div>
+
+        <div class="guest-name fadeInUp">
+          <strong>Untuk: <span id="guestName">Teman Spesial</span></strong>
+        </div>
+
+        <div class="event-details fadeInUp">
+          <div class="detail-item fadeInUp">
+            <div class="detail-label">
+              <span class="icon">📅</span>
+              Tanggal
+            </div>
+            <div class="detail-value">20 Agustus 2025</div>
+          </div>
+
+          <div class="detail-item fadeInUp">
+            <div class="detail-label">
+              <span class="icon">🕐</span>
+              Waktu
+            </div>
+            <div class="detail-value">15:00 - 18:00 WIB</div>
+          </div>
+
+          <div class="detail-item fadeInUp">
+            <div class="detail-label">
+              <span class="icon">📍</span>
+              Lokasi
+            </div>
+            <div class="detail-value">Jl. Bahagia No. 123</div>
+          </div>
+        </div>
+
+        <div class="btn-container fadeInUp">
+          <a href="https://maps.google.com" target="_blank" class="btn">
+            📍 Lihat Lokasi
+          </a>
+          <button class="btn btn-secondary" onclick="openRSVP()">
+            📝 Kirim Ucapan
+          </button>
+          <button class="btn btn-success" onclick="toggleMessages()">
+            💬 Lihat Pesan (<span id="messageCount">0</span>)
+          </button>
+        </div>
+
+        <!-- Messages Section -->
+        <div
+          class="messages-section"
+          id="messagesSection"
+          style="display: none"
+        >
+          <div class="messages-header">
+            <div class="messages-title">💌 Pesan & Ucapan</div>
+            <div class="messages-count">
+              <span id="messageCountBadge">0</span> pesan
+            </div>
+          </div>
+          <div class="messages-container" id="messagesContainer">
+            <div class="no-messages">
+              Belum ada pesan. Jadilah yang pertama mengirim ucapan! 🎉
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RSVP Modal -->
+    <div id="rsvpModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeRSVP()">&times;</span>
+        <h2>📝 Kirim Ucapan</h2>
+
+        <form id="rsvpForm">
+          <div class="form-group">
+            <label for="userName">Nama Anda:</label>
+            <input
+              type="text"
+              id="userName"
+              name="userName"
+              required
+              placeholder="Masukkan nama Anda"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Status Kehadiran:</label>
+            <div class="rsvp-status">
+              <div
+                class="rsvp-option"
+                data-status="attending"
+                onclick="selectStatus('attending')"
+              >
+                ✅ Hadir
+              </div>
+              <div
+                class="rsvp-option"
+                data-status="not-attending"
+                onclick="selectStatus('not-attending')"
+              >
+                ❌ Tidak Hadir
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="userMessage">Pesan & Ucapan:</label>
+            <textarea
+              id="userMessage"
+              name="userMessage"
+              placeholder="Tulis ucapan selamat atau pesan Anda di sini..."
+            ></textarea>
+          </div>
+
+          <div class="btn-container">
+            <button type="submit" class="btn btn-success">
+              🎉 Kirim RSVP & Ucapan
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      let messages = [];
+      let selectedStatus = "";
+
+      // Create animated particles
+      function createParticles() {
+        const particles = document.getElementById("particles");
+        const particleCount = 50;
+
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement("div");
+          particle.className = "particle";
+          particle.style.left = Math.random() * 100 + "%";
+          particle.style.top = Math.random() * 100 + "%";
+          particle.style.animationDelay = Math.random() * 6 + "s";
+          particle.style.animationDuration = Math.random() * 3 + 3 + "s";
+          particles.appendChild(particle);
+        }
+      }
+
+      function showConfetti() {
+        const colors = ["#ff6b6b", "#4ecdc4", "#45b7d1", "#ffa726", "#ab47bc"];
+        const confettiCount = 100;
+
+        for (let i = 0; i < confettiCount; i++) {
+          const confetti = document.createElement("div");
+          confetti.className = "confetti";
+          confetti.style.left = Math.random() * 100 + "%";
+          confetti.style.backgroundColor =
+            colors[Math.floor(Math.random() * colors.length)];
+          confetti.style.animationDelay = Math.random() * 3 + "s";
+          confetti.style.animationDuration = Math.random() * 3 + 2 + "s";
+          document.body.appendChild(confetti);
+
+          setTimeout(() => confetti.remove(), 5000);
+        }
+      }
+
+      function openRSVP() {
+        document.getElementById("rsvpModal").style.display = "block";
+      }
+
+      function closeRSVP() {
+        document.getElementById("rsvpModal").style.display = "none";
+        resetForm();
+      }
+
+      function selectStatus(status) {
+        selectedStatus = status;
+        document.querySelectorAll(".rsvp-option").forEach((option) => {
+          option.classList.remove("selected");
+        });
+        document
+          .querySelector(`[data-status="${status}"]`)
+          .classList.add("selected");
+      }
+
+      function resetForm() {
+        document.getElementById("rsvpForm").reset();
+        selectedStatus = "";
+        document.querySelectorAll(".rsvp-option").forEach((option) => {
+          option.classList.remove("selected");
+        });
+      }
+
+      document
+        .getElementById("rsvpForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const userName = document.getElementById("userName").value.trim();
+          const userMessage = document
+            .getElementById("userMessage")
+            .value.trim();
+
+          if (!userName) {
+            alert("Mohon masukkan nama Anda!");
+            return;
+          }
+
+          if (!selectedStatus) {
+            alert("Mohon pilih status kehadiran Anda!");
+            return;
+          }
+
+          const message = {
+            id: Date.now(),
+            name: userName,
+            status: selectedStatus,
+            message:
+              userMessage ||
+              (selectedStatus === "attending"
+                ? "Terima kasih atas undangannya! 🎉"
+                : "Maaf tidak bisa hadir, tapi selamat ya! 🎂"),
+            timestamp: new Date(),
+          };
+
+          messages.push(message);
+          updateURLWithMessages();
+          showConfetti();
+          closeRSVP();
+          updateMessageDisplay();
+          alert("Terima kasih! RSVP dan ucapan Anda telah dikirim 🎉");
+        });
+
+      function updateURLWithMessages() {
+        const messagesParam = btoa(JSON.stringify(messages));
+        const url = new URL(window.location);
+        url.searchParams.set("messages", messagesParam);
+        window.history.pushState({}, "", url);
+      }
+
+      function loadMessagesFromURL() {
+        const params = new URLSearchParams(window.location.search);
+        const messagesParam = params.get("messages");
+
+        if (messagesParam) {
+          try {
+            messages = JSON.parse(atob(messagesParam));
+            updateMessageDisplay();
+          } catch (e) {
+            console.log("Error loading messages:", e);
+          }
+        }
+      }
+
+      function toggleMessages() {
+        const section = document.getElementById("messagesSection");
+        section.style.display =
+          section.style.display === "none" ? "block" : "none";
+      }
+
+      function updateMessageDisplay() {
+        const container = document.getElementById("messagesContainer");
+        const messageCount = document.getElementById("messageCount");
+        const messageCountBadge = document.getElementById("messageCountBadge");
+
+        messageCount.textContent = messages.length;
+        messageCountBadge.textContent = messages.length;
+
+        if (messages.length === 0) {
+          container.innerHTML =
+            '<div class="no-messages">Belum ada pesan. Jadilah yang pertama mengirim ucapan! 🎉</div>';
+          return;
+        }
+
+        const sortedMessages = [...messages].sort(
+          (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+        );
+        container.innerHTML = "";
+        sortedMessages.forEach((msg) => {
+          const item = document.createElement("div");
+          item.className = "message-item";
+          const statusClass =
+            msg.status === "attending"
+              ? "status-attending"
+              : "status-not-attending";
+
+          item.innerHTML = `
+                <div class="message-header">
+                    <div class="message-name">${msg.name}</div>
+                    <div class="message-status ${statusClass}">
+                        ${
+                          msg.status === "attending"
+                            ? "✅ Hadir"
+                            : "❌ Tidak Hadir"
+                        }
+                    </div>
+                </div>
+                <div class="message-text">${msg.message}</div>
+                <div class="message-time">${new Date(
+                  msg.timestamp
+                ).toLocaleString("id-ID")}</div>
+            `;
+          container.appendChild(item);
+        });
+      }
+
+      window.onload = function () {
+        createParticles();
+        loadMessagesFromURL();
+      };
+    </script>
+  </body>
+</html>
