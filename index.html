@@ -887,14 +887,19 @@
               (selectedStatus === "attending"
                 ? "Terima kasih atas undangannya! 🎉"
                 : "Maaf tidak bisa hadir, tapi selamat ya! 🎂"),
-            timestamp: Timestamp.fromDate(new Date())
+            timestamp: Timestamp.fromDate(new Date()),
           };
 
           try {
             await db.collection("messages").add(message);
             showConfetti();
             closeRSVP();
-            alert("Pesan Anda berhasil dikirim! 🎉");
+            //alert("Pesan Anda berhasil dikirim! 🎉");
+            const toast = document.getElementById("toast");
+            toast.style.display = "block";
+            setTimeout(() => {
+              toast.style.display = "none";
+            }, 3000);
             loadMessages(); // untuk refresh daftar pesan
             document.getElementById("messagesSection").style.display = "block";
           } catch (error) {
@@ -1019,5 +1024,24 @@
         loadMessages();
       };
     </script>
+    <div
+      id="toast"
+      style="
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(50, 50, 50, 0.9);
+        color: white;
+        padding: 15px 25px;
+        border-radius: 10px;
+        font-weight: 500;
+        display: none;
+        z-index: 9999;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      "
+    >
+      Pesan Anda berhasil dikirim! 🎉
+    </div>
   </body>
 </html>
