@@ -895,6 +895,7 @@
             closeRSVP();
             alert("Pesan Anda berhasil dikirim! 🎉");
             loadMessages(); // untuk refresh daftar pesan
+            document.getElementById("messagesSection").style.display = "block";
           } catch (error) {
             console.error("Gagal menyimpan pesan:", error);
             alert("Terjadi kesalahan saat mengirim pesan.");
